@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mssql
+  name: mssql
+  selfLink: /api/v1/namespaces/default/services/mssql
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 1433
+    protocol: TCP
+    targetPort: 1433
+  selector:
+    run: mssql
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
