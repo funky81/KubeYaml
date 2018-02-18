@@ -1,3 +1,6 @@
+# Changes
+# 16/2/2017
+# - Added default NodePort
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,6 +15,7 @@ spec:
   - port: 1433
     protocol: TCP
     targetPort: 1433
+    nodePort: 31729
   selector:
     run: mssql
   sessionAffinity: None
