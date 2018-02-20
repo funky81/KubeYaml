@@ -28,7 +28,11 @@ spec:
         app: cache-server
     spec:
       containers:
-      - image: funky81/redis-template:4.0.6-2.1.2r-1
+      - image: funky81/redis-template:4.0.6-2.1.2
+        command:
+          - "/bin/bash"
+          - "-c"
+        args: ["redis-server;/data/./runCache.sh"]
         imagePullPolicy: IfNotPresent
         name: redis
         ports:
