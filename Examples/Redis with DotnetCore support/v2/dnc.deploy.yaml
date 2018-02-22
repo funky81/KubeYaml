@@ -38,6 +38,22 @@ spec:
         ports:
         - containerPort: 6379
           protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "redis-cli -h $(hostname) ping"
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "redis-cli -h $(hostname) ping"
+          initialDelaySeconds: 20
+          periodSeconds: 3        
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
