@@ -40,13 +40,24 @@ spec:
         imagePullPolicy: IfNotPresent
         name: mssql
         ports:
-        - containerPort: 1433
+        - name: mssqlport
+          containerPort: 1433
           protocol: TCP
         resources:
           limits:
             memory: 4Gi
           requests:
             memory: 2Gi
+        readinessProbe:
+          tcpSocket:
+            port: mssqlport
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          tcpSocket:
+            port: mssqlport
+          initialDelaySeconds: 20
+          periodSeconds: 3 
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
