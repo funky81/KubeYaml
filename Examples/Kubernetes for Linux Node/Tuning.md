@@ -25,9 +25,9 @@ Change following files : `/etc/kubernetes/manifests/kube-controller-manager.yaml
 with these :
 
 ```
-controller-manager: node-monitor-period=2s (from 5s)
-controller-manager: node-monitor-grace-period=16s (from 40s)
-controller-manager: pod-eviction-timeout=5s (from 5m)
+- --node-monitor-period=2s
+- --node-monitor-grace-period=16s
+- --pod-eviction-timeout=5s
 ```
 
 to make sure do kubectl describe `PodControllerManager` -n kube-system
