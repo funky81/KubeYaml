@@ -10,7 +10,6 @@ metadata:
   labels:
     run: mssql
   name: mssql
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/mssql
 spec:
   replicas: 1
   selector:

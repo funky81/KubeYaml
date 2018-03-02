@@ -4,11 +4,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     run: mssql
   name: mssql
-  selfLink: /api/v1/namespaces/default/services/mssql
 spec:
   externalTrafficPolicy: Cluster
   ports:
@@ -19,6 +17,6 @@ spec:
   selector:
     run: mssql
   sessionAffinity: None
-  type: NodePort
+  type: LoadBalancer
 status:
   loadBalancer: {}

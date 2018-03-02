@@ -1,19 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
-    run: mssql
-  name: mssql
+    app: ws-prod
+  name: ws-prod
 spec:
   externalTrafficPolicy: Cluster
   ports:
-  - port: 1433
+  - name: port-80
+    port: 80
     protocol: TCP
-    targetPort: 1433
+    targetPort: 80
   selector:
-    run: mssql
+    app: ws-prod
   sessionAffinity: None
   type: NodePort
-status:
-  loadBalancer: {}
