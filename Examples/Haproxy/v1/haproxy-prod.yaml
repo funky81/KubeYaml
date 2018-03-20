@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: haproxy-prod-v1
+  name: haproxy-prod-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: haproxy-prod-v1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        k8s-app: haproxy-prod-v1
+      name: haproxy-prod-v1
+    spec:
+      containers:
+      - image: library/haproxy:1.8.4
+        imagePullPolicy: IfNotPresent
+        name: haproxy-prod-v1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - name: nfs-haproxy-prod-v1
+            mountPath: "/usr/local/etc/haproxy/"
+      volumes:
+        - name: nfs-haproxy-prod-v1
+          persistentVolumeClaim:
+            claimName: nfs-haproxy-prod-v1
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-haproxy-prod-v1
+  namespace: prod
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 192.168.12.9
+    path: "/volume1/KuberData/Apps/Haproxy"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-haproxy-prod-v1
+  namespace: prod
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: haproxy-prod-v1
+  name: haproxy-prod-v1
+  namespace: prod
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: tcp-80-wrrkp
+    nodePort: 30343
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: tcp-81-service
+    nodePort: 30344
+    port: 81
+    protocol: TCP
+    targetPort: 81
+  selector:
+    k8s-app: haproxy-prod-v1
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
