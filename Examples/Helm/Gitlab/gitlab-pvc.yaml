@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: managed-nfs-storage
+  labels:
+    app: gitlab-helm-postgresql
+    chart: postgresql-0.8.1
+    heritage: Tiller
+    release: gitlab-helm
+  name: gitlab-helm-postgresql
+  namespace: devops
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: managed-nfs-storage
+  labels:
+    app: gitlab-helm-redis
+    chart: redis-0.9.0
+    heritage: Tiller
+    release: gitlab-helm
+  name: gitlab-helm-redis
+  namespace: devops
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
